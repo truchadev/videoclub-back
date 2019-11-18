@@ -4,6 +4,7 @@ const fs = require('fs');
 const movies = JSON.parse(fs.readFileSync('./moviesdb.json', 'utf-8'));
 
 
+
 app.use(express.json());
 
 
@@ -39,6 +40,85 @@ app.get('/movies/genre', (req, res) => {
         res.status(400).send('genero no encontrado')
     }
 })
+
+
+// registro usuario
+
+app.post("/register", (req, res) => {
+
+    const { generateId } = require('./token.js');
+    const user = req.body
+    const userdb = JSON.parse(fs.readFileSync('./usersdb.json', 'utf-8'));
+
+    const longitudPattern = /.{8,}/
+
+    if (!longitudPattern.test(user.password)) {
+        return res
+       .status(400)
+       .json({ message: `password too short` });
+    }
+
+    const userExists = userdb.users.some(
+        existentUser => existentUser.email === user.email,
+    );
+
+    if (userExists) {
+        return res
+        .status(400)
+        .json({ message: `email ${user.email}  already exists` });
+    }
+
+    user.id = generateId();
+    userdb.users.push(user);
+
+    fs.writeFileSync('./users.db.json', JSON.stringify(userdb, null, 2));
+
+    res.status(200).json(user);
+})
+
+
+
+// login user
+
+app.post("/login", (req, res) => {
+
+    const { generateId } = require('./token.js');
+
+    const user = req.body;
+    const userdb = JSON.parse(fs.readFileSync('./userdb.json', 'utf-8'));
+  
+    const foundUser = userdb.users.find(
+      existentUser =>
+        existentUser.email === user.email &&
+        existentUser.password === user.password,
+    );
+  
+    if (foundUser) {
+      const token = generateId();
+  
+      foundUser.token = token;
+  
+      fs.writeFileSync('./userdb.json', JSON.stringify(userdb, null, 2));
+      res
+        .status(200)
+        .json({ message: `valid login`, user: foundUser });
+    } else {
+      res.status(401).json({ message: `invalid login` });
+    }
+  })
+
+
+// profile user
+
+
+
+
+
+
+
+
+
+
 
 
 
