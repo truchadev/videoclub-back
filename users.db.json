@@ -8,6 +8,12 @@
       "email": "rete",
       "password": "sdsdfasdfsadff",
       "id": "a23dcd2a-663b-4f0b-8abb-b31c9e84e3d5"
+    },
+    {
+      "email": "user1",
+      "password": "123456789",
+      "id": "ea6332d8-561c-4d37-aa1f-9d7cbf3e43b7",
+      "token": "86b7b836-8965-4ae6-b845-ff0500d894fd"
     }
   ]
 }

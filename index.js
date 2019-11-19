@@ -48,7 +48,7 @@ app.post("/register", (req, res) => {
 
     const { generateId } = require('./token.js');
     const user = req.body
-    const userdb = JSON.parse(fs.readFileSync('./usersdb.json', 'utf-8'));
+    const userdb = JSON.parse(fs.readFileSync('./users.db.json', 'utf-8'));
 
     const longitudPattern = /.{8,}/
 
@@ -85,7 +85,7 @@ app.post("/login", (req, res) => {
     const { generateId } = require('./token.js');
 
     const user = req.body;
-    const userdb = JSON.parse(fs.readFileSync('./userdb.json', 'utf-8'));
+    const userdb = JSON.parse(fs.readFileSync('./users.db.json', 'utf-8'));
   
     const foundUser = userdb.users.find(
       existentUser =>
@@ -98,7 +98,7 @@ app.post("/login", (req, res) => {
   
       foundUser.token = token;
   
-      fs.writeFileSync('./userdb.json', JSON.stringify(userdb, null, 2));
+      fs.writeFileSync('./users.db.json', JSON.stringify(userdb, null, 2));
       res
         .status(200)
         .json({ message: `valid login`, user: foundUser });
