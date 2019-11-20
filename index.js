@@ -1,24 +1,28 @@
 const express = require('express');
 const app = express();
 const fs = require('fs');
-const movies = JSON.parse(fs.readFileSync('./moviesdb.json', 'utf-8'));
+const moviesdb = JSON.parse(fs.readFileSync('./moviesdb.json', 'utf-8'));
+
 
 
 
 app.use(express.json());
 
 
+
+////////////////////////// MOVIES ///////////////////////
+
 // all movies
 
 app.get('/movies', (req, res) => {
-    res.send(movies);
+    res.send(moviesdb);
 })
 
 // id movies
 app.get('/movies/id', (req, res) => {
     
     const idMovies = req.body;
-    const foundIdMovies = movies.movies.find(movies => movies.id === idMovies.id);
+    const foundIdMovies = moviesdb.movies.find(movies => movies.id === idMovies.id);
 
     if (foundIdMovies){
         res.status(200).send(foundIdMovies);
@@ -27,12 +31,13 @@ app.get('/movies/id', (req, res) => {
     }  
 })
 
+
 // genre movies
 
 app.get('/movies/genre', (req, res) => {
 
     const genreMovies = req.body;
-    const fundGenreMovies = movies.movies.find(movies => movies.genre === genreMovies.genre);
+    const fundGenreMovies = moviesdb.movies.find(movies => movies.genre === genreMovies.genre);
 
     if (fundGenreMovies){
         res.status(200).send(fundGenreMovies);
@@ -42,15 +47,16 @@ app.get('/movies/genre', (req, res) => {
 })
 
 
+////////////////////////// USER ///////////////////////
+
 // registro usuario
 
 app.post("/register", (req, res) => {
 
-    const { generateId } = require('./token.js');
     const user = req.body
     const userdb = JSON.parse(fs.readFileSync('./users.db.json', 'utf-8'));
 
-    const longitudPattern = /.{8,}/
+    const longitudPattern = /.{8,}/ // contraseña mínimo de 8  
 
     if (!longitudPattern.test(user.password)) {
         return res
@@ -58,17 +64,17 @@ app.post("/register", (req, res) => {
        .json({ message: `password too short` });
     }
 
-    const userExists = userdb.users.some(
+    const userExists = userdb.users.some( //comprueba que el usuario no exista
         existentUser => existentUser.email === user.email,
     );
 
-    if (userExists) {
+    if (userExists) {  
         return res
         .status(400)
         .json({ message: `email ${user.email}  already exists` });
     }
 
-    user.id = generateId();
+    user.id = userdb.users.length + 1; //genera id desde el núm 1
     userdb.users.push(user);
 
     fs.writeFileSync('./users.db.json', JSON.stringify(userdb, null, 2));
@@ -110,6 +116,26 @@ app.post("/login", (req, res) => {
 
 // profile user
 
+
+app.get('/profile/id',  (req, res) => {
+
+    const usersdb = JSON.parse(fs.readFileSync('./users.db.json', 'utf-8'));
+
+    const idUsers = req.body;
+    const foundIdUser = usersdb.users.find(users => users.id === idUsers.id);
+
+    if (foundIdUser) {
+        res.status(200).send(foundIdUser);
+      } else {
+        res.status(204).send('user no encontrado');
+      }
+
+})
+
+
+////////////////////////// PEDIDOS ///////////////////////
+
+// pedir movie 
 
 
 
