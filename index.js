@@ -20,15 +20,15 @@ app.get('/movies', (req, res) => {
 
 // id movies
 app.get('/movies/id', (req, res) => {
-    
-    const idMovies = req.body;
-    const foundIdMovies = moviesdb.movies.find(movies => movies.id === idMovies.id);
 
-    if (foundIdMovies){
+    const idMovies = req.body;
+    const foundIdMovies = moviesdb.movies.find(movies => movies.idFilms === idMovies.idFilms);
+
+    if (foundIdMovies) {
         res.status(200).send(foundIdMovies);
     } else {
         res.status(400).send('id no encontrado');
-    }  
+    }
 })
 
 
@@ -39,9 +39,9 @@ app.get('/movies/genre', (req, res) => {
     const genreMovies = req.body;
     const fundGenreMovies = moviesdb.movies.find(movies => movies.genre === genreMovies.genre);
 
-    if (fundGenreMovies){
+    if (fundGenreMovies) {
         res.status(200).send(fundGenreMovies);
-    }else {
+    } else {
         res.status(400).send('genero no encontrado')
     }
 })
@@ -60,18 +60,18 @@ app.post("/register", (req, res) => {
 
     if (!longitudPattern.test(user.password)) {
         return res
-       .status(400)
-       .json({ message: `password too short` });
+            .status(400)
+            .json({ message: `password too short` });
     }
 
     const userExists = userdb.users.some( //comprueba que el usuario no exista
         existentUser => existentUser.email === user.email,
     );
 
-    if (userExists) {  
+    if (userExists) {
         return res
-        .status(400)
-        .json({ message: `email ${user.email}  already exists` });
+            .status(400)
+            .json({ message: `email ${user.email}  already exists` });
     }
 
     user.id = userdb.users.length + 1; //genera id desde el núm 1
@@ -92,32 +92,32 @@ app.post("/login", (req, res) => {
 
     const user = req.body;
     const userdb = JSON.parse(fs.readFileSync('./users.db.json', 'utf-8'));
-  
+
     const foundUser = userdb.users.find(
-      existentUser =>
-        existentUser.email === user.email &&
-        existentUser.password === user.password,
+        existentUser =>
+            existentUser.email === user.email &&
+            existentUser.password === user.password,
     );
-  
+
     if (foundUser) {
-      const token = generateId();
-  
-      foundUser.token = token;
-  
-      fs.writeFileSync('./users.db.json', JSON.stringify(userdb, null, 2));
-      res
-        .status(200)
-        .json({ message: `valid login`, user: foundUser });
+        const token = generateId();
+
+        foundUser.token = token;
+
+        fs.writeFileSync('./users.db.json', JSON.stringify(userdb, null, 2));
+        res
+            .status(200)
+            .json({ message: `valid login`, user: foundUser });
     } else {
-      res.status(401).json({ message: `invalid login` });
+        res.status(401).json({ message: `invalid login` });
     }
-  })
+})
 
 
 // profile user
 
 
-app.get('/profile/id',  (req, res) => {
+app.get('/profile/id', (req, res) => {
 
     const usersdb = JSON.parse(fs.readFileSync('./users.db.json', 'utf-8'));
 
@@ -126,30 +126,59 @@ app.get('/profile/id',  (req, res) => {
 
     if (foundIdUser) {
         res.status(200).send(foundIdUser);
-      } else {
-        res.status(204).send('user no encontrado');
-      }
+    } else {
+        res.status(401).send('user no encontrado');
+    }
 
 })
 
 
 ////////////////////////// PEDIDOS ///////////////////////
 
-// pedir movie 
+// fechas
+
+
+app.post('/return', (req, res) => {
+
+
+    const idUsers = req.body;
+    const usersdb = JSON.parse(fs.readFileSync('./users.db.json', 'utf-8'));
+    const foundUser = usersdb.users.find(existentUser => existentUser.id === idUsers.id)
+
+    const moviesdb = JSON.parse(fs.readFileSync('./moviesdb.json', 'utf-8'));
+    const foundMovie = moviesdb.movies.find(movies => movies.idFilms === idUsers.idFilms)
 
 
 
+    if (foundUser) {
+
+        if (foundMovie) {
+
+            const date = new Date();
+            const todayDate = date.getDay() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
+            const returnDate = ((date.getDay() + 5) + '/' + (date.getMonth() + 1) + '/' + date.getFullYear());
+
+            foundUser.todayDate = todayDate;
+            foundUser.returnDate = returnDate;
 
 
+            foundUser.idFilms = foundMovie.idFilms;
+            foundUser.title = foundMovie.title;
+
+            fs.writeFileSync('./users.db.json', JSON.stringify(usersdb, null, 2));
+            res
+                .status(200)
+                .json('valido')
+        } else {
+            res.status(401).json('no valido user');
+        }
+
+    } else {
+        res.status(401).json('no valido movie');
+    }
 
 
-
-
-
-
-
-
-
+})
 
 
 

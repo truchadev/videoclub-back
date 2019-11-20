@@ -3,7 +3,9 @@
     {
       "email": "hola1",
       "password": "sdsdfasdfsadff",
-      "id": 1
+      "id": 1,
+      "todayDate": "3/11/2019",
+      "returnDate": "8/11/2019"
     },
     {
       "email": "hola2",
@@ -14,7 +16,20 @@
       "id": 3,
       "nombre": "pepe",
       "email": "holaçç2fs@ewef",
-      "password": "23456789876"
+      "password": "23456789876",
+      "todayDate": "3/11/2019",
+      "returnDate": "8/11/2019"
+    },
+    {
+      "name": "manolo",
+      "email": "hola@gamil",
+      "password": "123456789",
+      "id": 4,
+      "token": "6ac7ef53-27b9-45b9-a60c-2afdb2970f29",
+      "todayDate": "3/11/2019",
+      "returnDate": "8/11/2019",
+      "idFilms": 5,
+      "title": "The Lion King"
     }
   ]
 }
