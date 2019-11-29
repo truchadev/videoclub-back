@@ -4,7 +4,12 @@ const fs = require('fs');
 const moviesdb = JSON.parse(fs.readFileSync('./moviesdb.json', 'utf-8'));
 
 
-
+app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*"); 
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Methods", "GET, POST,PUT,DELETE");
+    next();
+});
 
 app.use(express.json());
 
@@ -95,7 +100,7 @@ app.post("/login", (req, res) => {
 
     const foundUser = userdb.users.find(
         existentUser =>
-            existentUser.email === user.email &&
+            existentUser.username === user.username &&
             existentUser.password === user.password,
     );
 
@@ -135,8 +140,6 @@ app.get('/profile/id', (req, res) => {
 
 ////////////////////////// PEDIDOS ///////////////////////
 
-// fechas
-
 
 app.post('/return', (req, res) => {
 
@@ -154,6 +157,7 @@ app.post('/return', (req, res) => {
 
         if (foundMovie) {
 
+            // Crea fecha de alquiler y fecha para devolver
             const date = new Date();
             const todayDate = date.getDay() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
             const returnDate = ((date.getDay() + 5) + '/' + (date.getMonth() + 1) + '/' + date.getFullYear());
@@ -161,7 +165,7 @@ app.post('/return', (req, res) => {
             foundUser.todayDate = todayDate;
             foundUser.returnDate = returnDate;
 
-
+            // Inserta en la bd de user el id y título de la peli 
             foundUser.idFilms = foundMovie.idFilms;
             foundUser.title = foundMovie.title;
 
@@ -186,42 +190,3 @@ app.post('/return', (req, res) => {
 //start server
 
 app.listen(3000, () => console.log("app listening in localhost:3000"));
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- //Conexión a MongoDB
-
-// mongoose.connect('mongodb://localhost:27017/', 
-//         {
-//             useNewUrlParser: true,
-//             useUnifiedTopology: true,
-//             useCreateIndex:true
-//         })
-//     .then(() => console.log('conectado a mongodb'))
-//     .catch(error => console.log('Error al conectar a MongoDB ' + error));
-
-
-//Listening server
-
-// app.listen(3000, () => {
-//     console.log('server on port 3000');
-// })

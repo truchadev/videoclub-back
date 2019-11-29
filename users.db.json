@@ -30,6 +30,23 @@
       "returnDate": "8/11/2019",
       "idFilms": 5,
       "title": "The Lion King"
+    },
+    {
+      "username": "Laura",
+      "firstname": "criz",
+      "surename": "ugugii",
+      "email": "lcc@gamsldf",
+      "password": "123456789",
+      "id": 5
+    },
+    {
+      "username": "trucha",
+      "firstname": "Laura",
+      "surename": "Cruz",
+      "email": "lcc4413@gmail.com",
+      "password": "123456789",
+      "id": 6,
+      "token": "34398c96-41ad-4f7f-887c-f03fdef13e0f"
     }
   ]
 }
