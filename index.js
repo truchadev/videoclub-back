@@ -122,12 +122,11 @@ app.post("/login", (req, res) => {
 // profile user
 
 
-app.get('/profile/id', (req, res) => {
+app.get('/profile/id/:id', (req, res) => {
 
     const usersdb = JSON.parse(fs.readFileSync('./users.db.json', 'utf-8'));
-
-    const idUsers = req.body;
-    const foundIdUser = usersdb.users.find(users => users.id === idUsers.id);
+    const idUsers = req.params.id;
+    const foundIdUser = usersdb.users.find(users => users.id === parseInt(idUsers));
 
     if (foundIdUser) {
         res.status(200).send(foundIdUser);

@@ -21,11 +21,12 @@
       "returnDate": "8/11/2019"
     },
     {
+      "username": "Manolo",
       "name": "manolo",
       "email": "hola@gamil",
       "password": "123456789",
       "id": 4,
-      "token": "6ac7ef53-27b9-45b9-a60c-2afdb2970f29",
+      "token": "7aa5717a-42c0-4299-a758-a372c58ab9e0",
       "todayDate": "3/11/2019",
       "returnDate": "8/11/2019",
       "idFilms": 5,
@@ -37,7 +38,8 @@
       "surename": "ugugii",
       "email": "lcc@gamsldf",
       "password": "123456789",
-      "id": 5
+      "id": 5,
+      "token": "e5b10684-09af-4cf3-b64e-461a073382c4"
     },
     {
       "username": "trucha",
@@ -46,7 +48,7 @@
       "email": "lcc4413@gmail.com",
       "password": "123456789",
       "id": 6,
-      "token": "34398c96-41ad-4f7f-887c-f03fdef13e0f"
+      "token": "9d5d43bb-5298-4dfa-b458-12b5730ec7d7"
     }
   ]
 }
