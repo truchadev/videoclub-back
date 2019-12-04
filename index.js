@@ -39,10 +39,10 @@ app.get('/movies/id', (req, res) => {
 
 // genre movies
 
-app.get('/movies/genre', (req, res) => {
+app.post('/movies/genre', (req, res) => {
 
     const genreMovies = req.body;
-    const fundGenreMovies = moviesdb.movies.find(movies => movies.genre === genreMovies.genre);
+    const fundGenreMovies = moviesdb.movies.filter(movies => movies.genre === genreMovies.genre);
 
     if (fundGenreMovies) {
         res.status(200).send(fundGenreMovies);
@@ -140,7 +140,7 @@ app.get('/profile/id/:id', (req, res) => {
 ////////////////////////// PEDIDOS ///////////////////////
 
 
-app.post('/return', (req, res) => {
+app.post('/order', (req, res) => {
 
 
     const idUsers = req.body;
